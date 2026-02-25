@@ -26,6 +26,7 @@ import AdminOrders from "./pages/AdminOrders";
 import AdminEditBook from "./pages/AdminEditBook";
 import Unauthorized from "./pages/Unauthorized";
 import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   const location = useLocation();
@@ -92,13 +93,13 @@ const App = () => {
         />
 
         <Route
-  path="/profile"
-  element={
-    <ProtectedRoute roles={["user", "admin"]}>
-      <Profile />
-    </ProtectedRoute>
-  }
-/>
+          path="/profile"
+          element={
+            <ProtectedRoute roles={["user", "admin"]}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/myorders"
@@ -154,6 +155,8 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />
