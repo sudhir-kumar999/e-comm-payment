@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "https://e-comm-payment.onrender.com",
+      "https://e-comm-front-6mnh.onrender.com",
       "http://localhost:5173",
     ],
     credentials: true,
