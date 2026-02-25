@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "https://react-next-supabase.onrender.com",
+      "https://e-comm-payment.onrender.com",
       "http://localhost:5173",
     ],
     credentials: true,
