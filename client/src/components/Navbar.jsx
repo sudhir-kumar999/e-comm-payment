@@ -58,16 +58,36 @@ const Navbar = () => {
               <Button variant="ghost">Cart ({cart.length})</Button>
             </Link>
           )}
+          <Link to={user ? "/profile" : "/login"}>
+          <div className="flex flex-col items-center">
+            <User
+              className={`h-5 w-5 ${
+                isActive("/profile") || isActive("/login")
+                  ? "text-blue-600"
+                  : "text-gray-600"
+              }`}
+            />
+            <span
+              className={`text-xs ${
+                isActive("/profile") || isActive("/login")
+                  ? "text-blue-600"
+                  : "text-gray-600"
+              }`}
+            >
+              {user ? "Profile" : "Login"}
+            </span>
+          </div>
+        </Link>
 
           {!user ? (
             <Link to="/login">
               <Button>Login</Button>
             </Link>
           ) : (
-            <Button variant="destructive" onClick={handleLogout}>
-              Logout
-            </Button>
+            <></>
           )}
+
+          
         </div>
       </nav>
 
@@ -82,9 +102,7 @@ const Navbar = () => {
             <Button>Login</Button>
           </Link>
         ) : (
-          <Button variant="destructive" onClick={handleLogout}>
-            Logout
-          </Button>
+          <></>
         )}
       </nav>
 

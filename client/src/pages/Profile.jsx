@@ -1,16 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { BaseUrl } from "../main";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { myContext } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+
 
 const Profile = () => {
   const navigate = useNavigate();
+//   const {user}=useContext(myContext)
+  const { logout, user } = useContext(myContext);
 
-  const [user, setUser] = useState({
+  const [users, setUsers] = useState({
     name: "",
     address: "",
   });
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   // =====================
   // GET PROFILE
@@ -21,7 +31,7 @@ const Profile = () => {
         withCredentials: true,
       });
 
-      setUser(res.data.user);
+      setUsers(res.data.user);
     } catch {
       toast.error("Failed to load profile");
     }
@@ -54,18 +64,18 @@ const Profile = () => {
       <div className="space-y-3 border p-4 rounded shadow-sm">
         <input
           className="border p-2 w-full rounded"
-          value={user.name}
+          value={users.name}
           onChange={(e) =>
-            setUser({ ...user, name: e.target.value })
+            setUser({ ...users, name: e.target.value })
           }
           placeholder="Name"
         />
 
         <textarea
           className="border p-2 w-full rounded"
-          value={user.address}
+          value={users.address}
           onChange={(e) =>
-            setUser({ ...user, address: e.target.value })
+            setUser({ ...users, address: e.target.value })
           }
           placeholder="Address"
         />
@@ -93,7 +103,18 @@ const Profile = () => {
         >
           View Orders
         </button>
+
+        
       </div>
+      {!user ? (
+            <Link to="/login">
+              <Button>Login</Button>
+            </Link>
+          ) : (
+            <Button variant="destructive" onClick={handleLogout}>
+              Logout
+            </Button>
+          )}
     </div>
   );
 };
