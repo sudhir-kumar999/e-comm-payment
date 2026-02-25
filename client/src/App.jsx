@@ -18,13 +18,14 @@ import Books from "./components/Books";
 import BookDetail from "./components/BookDetail";
 
 import Cart from "./pages/Cart";
-
+import { ToastContainer } from "react-toastify";
 import Footer from "./components/Footer";
 import AddBook from "./pages/AddBook";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminOrders from "./pages/AdminOrders";
 import AdminEditBook from "./pages/AdminEditBook";
 import Unauthorized from "./pages/Unauthorized";
+import Profile from "./pages/Profile";
 
 const App = () => {
   const location = useLocation();
@@ -32,6 +33,15 @@ const App = () => {
 
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
       {isAdminRoute ? <AdminNavbar /> : <Navbar />}
 
       <Routes>
@@ -80,6 +90,15 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/profile"
+  element={
+    <ProtectedRoute roles={["user", "admin"]}>
+      <Profile />
+    </ProtectedRoute>
+  }
+/>
 
         <Route
           path="/myorders"

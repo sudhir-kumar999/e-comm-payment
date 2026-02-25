@@ -1,11 +1,14 @@
 import React, { createContext, useState, useEffect } from "react";
+import { toast } from "react-toastify"; // ✅ ADD
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
-  // Load cart from localStorage on start
+  // =========================
+  // LOAD CART
+  // =========================
   useEffect(() => {
     const saved = localStorage.getItem("cart");
     if (saved) {
@@ -13,32 +16,60 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  // Save cart whenever it changes
+  // =========================
+  // SAVE CART
+  // =========================
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
+  // =========================
+  // ADD TO CART
+  // =========================
   const addToCart = (book) => {
     setCart((prev) => {
       const exist = prev.find((item) => item._id === book._id);
 
+      let updatedCart;
+
       if (exist) {
-        return prev.map((item) =>
+        updatedCart = prev.map((item) =>
           item._id === book._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        return [...prev, { ...book, quantity: 1 }];
+        updatedCart = [...prev, { ...book, quantity: 1 }];
       }
+
+      // ✅ Toast after update
+      setTimeout(() => {
+        toast.success(`${book.name || book.title} added to cart 🛒`);
+      }, 0);
+
+      return updatedCart;
     });
   };
 
+  // =========================
+  // REMOVE FROM CART
+  // =========================
   const removeFromCart = (id) => {
+    const item = cart.find((i) => i._id === id);
+
     setCart(cart.filter((item) => item._id !== id));
+
+    if (item) {
+      toast.error(`${item.name || item.title} removed ❌`);
+    }
   };
 
+  // =========================
+  // INCREASE QTY
+  // =========================
   const increaseQty = (id) => {
+    const item = cart.find((i) => i._id === id);
+
     setCart(
       cart.map((item) =>
         item._id === id
@@ -46,9 +77,18 @@ export const CartProvider = ({ children }) => {
           : item
       )
     );
+
+    if (item) {
+      toast.info(`Quantity increased (${item.quantity + 1})`);
+    }
   };
 
+  // =========================
+  // DECREASE QTY
+  // =========================
   const decreaseQty = (id) => {
+    const item = cart.find((i) => i._id === id);
+
     setCart(
       cart.map((item) =>
         item._id === id && item.quantity > 1
@@ -56,10 +96,18 @@ export const CartProvider = ({ children }) => {
           : item
       )
     );
+
+    if (item && item.quantity > 1) {
+      toast.info(`Quantity decreased (${item.quantity - 1})`);
+    }
   };
 
+  // =========================
+  // CLEAR CART
+  // =========================
   const clearCart = () => {
     setCart([]);
+    toast.warning("Cart cleared 🧹");
   };
 
   return (

@@ -163,18 +163,18 @@ const Navbar = () => {
           </Link>
         )}
 
-        <Link to={user ? "/dashboard" : "/login"}>
+        <Link to={user ? "/profile" : "/login"}>
           <div className="flex flex-col items-center">
             <User
               className={`h-5 w-5 ${
-                isActive("/dashboard") || isActive("/login")
+                isActive("/profile") || isActive("/login")
                   ? "text-blue-600"
                   : "text-gray-600"
               }`}
             />
             <span
               className={`text-xs ${
-                isActive("/dashboard") || isActive("/login")
+                isActive("/profile") || isActive("/login")
                   ? "text-blue-600"
                   : "text-gray-600"
               }`}

@@ -8,6 +8,7 @@ import productRoutes from "./src/routes/prodRoutes.js";
 import orderRoutes from "./src/routes/orderRoutes.js";
 import routers from "./src/routes/paymentRoutes.js";
 import bookRoutes from "./src/routes/bookRoutes.js";
+import profileRoutes from "./src/routes/profileRoutes.js";
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/books", bookRoutes);
 app.use("/product", productRoutes);
 
 // normal payment routes (create, verify etc)
+app.use("/profile", profileRoutes);
 app.use("/payment", routers);
 
 app.use("/orders", orderRoutes);

@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { BaseUrl } from "../main";
 import { toast } from "react-toastify";
+import { CartContext } from "../context/CartContext"; // ✅ ADD
 
 const ProductCard = ({ item }) => {
+  // ✅ Cart Context
+  const { addToCart } = useContext(CartContext);
 
+  // =========================
+  // ADD TO CART
+  // =========================
+  const handleAddToCart = () => {
+    addToCart(item);
+    console.log("ADD CLICKED"); // 👈 add this
+    // ✅ TOAST
+    // toast.success(`${item.name} added to cart 🛒`);
+  };
+
+  // =========================
+  // PAYMENT
+  // =========================
   const handlePayment = async () => {
     try {
       toast.info("Creating order...");
 
-      // ✅ 1. Create Order
       const res = await axios.post(
         `${BaseUrl}/payment/create`,
         {
@@ -23,7 +38,6 @@ const ProductCard = ({ item }) => {
 
       const { order } = res.data;
 
-      // ✅ 2. Razorpay Checkout Options
       const options = {
         key: "rzp_test_SCgmKKnCQEB7eM",
         amount: order.amount,
@@ -36,7 +50,6 @@ const ProductCard = ({ item }) => {
           try {
             toast.info("Verifying payment...");
 
-            // ✅ 3. Verify Payment
             const verify = await axios.post(
               `${BaseUrl}/payment/verify`,
               {
@@ -70,7 +83,6 @@ const ProductCard = ({ item }) => {
 
       const razor = new window.Razorpay(options);
       razor.open();
-
     } catch (error) {
       console.log("Payment Error:", error);
       toast.error("Payment Failed. Try again!");
@@ -84,6 +96,15 @@ const ProductCard = ({ item }) => {
       <p className="font-medium">Price: ₹{item.price}</p>
       <p>Category: {item.category}</p>
 
+      {/* ✅ ADD TO CART BUTTON */}
+      <button
+        className="border p-2 bg-green-600 text-white rounded hover:bg-green-700"
+        onClick={handleAddToCart}
+      >
+        Add to Cart
+      </button>
+
+      {/* ✅ BUY NOW BUTTON */}
       <button
         className="border p-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         onClick={handlePayment}

@@ -5,10 +5,11 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { CartProvider } from "./context/CartContext";
-// export const BaseUrl = "http://localhost:5000";
-export const BaseUrl = "https://e-comm-back-lj46.onrender.com";
+import "react-toastify/dist/ReactToastify.css";
+export const BaseUrl = "http://localhost:5000";
+// export const BaseUrl = "https://e-comm-back-lj46.onrender.com";
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  // <StrictMode>
   <BrowserRouter>
     <AuthProvider>
       <CartProvider>
@@ -16,5 +17,5 @@ createRoot(document.getElementById("root")).render(
       </CartProvider>
     </AuthProvider>
   </BrowserRouter>
-  </StrictMode>
+  // </StrictMode>
 );

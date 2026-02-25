@@ -1,30 +1,35 @@
-import axios from 'axios'
-import React from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
-import { BaseUrl } from '../main'
-import ProductCard from './ProductCard'
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { BaseUrl } from "../main";
+import ProductCard from "./ProductCard";
+import { toast } from "react-toastify"; // ✅ ADD
 
 const Product = () => {
-const [data, setData]=useState([])
+  const [data, setData] = useState([]);
 
+  const getProduct = async () => {
+    try {
+      const res = await axios.get(`${BaseUrl}/product/details`, {
+        withCredentials: true,
+      });
 
-const getProduct=async()=>{
-    const res=await axios.get(`${BaseUrl}/product/details`,{
-        withCredentials:true,
-    })
-    // console.log(res.data.data)
-    setData(res.data.data)
-    
+      setData(res.data.data);
 
-}
-console.log(data)
-useEffect(()=>{
-    getProduct()
-},[])
+      // optional success toast
+      // toast.success("Products Loaded ✅");
+
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to load products ❌"); // ✅ ERROR TOAST
+    }
+  };
+
+  useEffect(() => {
+    getProduct();
+  }, []);
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className="flex flex-col gap-4">
       <h2>All Products</h2>
 
       {data.length === 0 ? (
@@ -35,7 +40,7 @@ useEffect(()=>{
         ))
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;

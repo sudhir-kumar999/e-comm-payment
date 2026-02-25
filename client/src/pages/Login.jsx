@@ -18,12 +18,21 @@ const Login = () => {
     password: "",
   });
 
+  // ✅ input change handler
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // ✅ submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ validation
+    // Validation
     if (!formData.email || !formData.password) {
-      toast.error("All fields are required");
+      toast.error("All fields are required ❌");
       return;
     }
 
@@ -33,7 +42,7 @@ const Login = () => {
       if (res?.success) {
         toast.success("Login Successful ✅");
 
-        // little delay so user sees toast
+        // user ko toast dekhne ka time
         setTimeout(() => {
           navigate("/dashboard");
         }, 1500);
@@ -41,7 +50,8 @@ const Login = () => {
         toast.error(res?.message || "Invalid credentials ❌");
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      console.log(error);
+      toast.error("Something went wrong ⚠️");
     }
   };
 
@@ -49,34 +59,34 @@ const Login = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex justify-center items-center px-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader>
-          <CardTitle className="text-center text-2xl">
+          <CardTitle className="text-center text-2xl font-semibold">
             Login to Account
           </CardTitle>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Email */}
             <div>
               <Label>Email Address</Label>
               <Input
                 type="email"
+                name="email"
                 placeholder="Enter your email"
                 value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
+                onChange={handleChange}
               />
             </div>
 
+            {/* Password */}
             <div>
               <Label>Password</Label>
               <Input
                 type="password"
+                name="password"
                 placeholder="Enter password"
                 value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
+                onChange={handleChange}
               />
             </div>
 
@@ -85,6 +95,7 @@ const Login = () => {
             </Button>
           </form>
 
+          {/* Signup link */}
           <div className="text-center mt-4 text-sm">
             Don’t have an account?{" "}
             <Link to="/signup" className="text-blue-600 hover:underline">
